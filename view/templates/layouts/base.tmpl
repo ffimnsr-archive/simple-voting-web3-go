@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Game Voting</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Game</th>
+          <th>Votes</th>
+          <th>Rank</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pvz</td>
+          <td id="g1"></td>
+        </tr>
+        <tr>
+          <td>Ragnarok</td>
+          <td id="g2"></td>
+        </tr>
+      </tbody>
+    </table>
+    <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
+    <script>
+      let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+      let abi = JSON.parse('')
+      let contract = web3.eth.contract(abi)
+      let contractInstance = contract.at('')
+      let games = {
+        "PvZ": "g1",
+        "Ragnarok": "g2"
+      }
+      function voteForGame() {
+        gameName = $("#game").val()
+        contractInstance.voteForGame(gameName, {from: web3.eth.accounts[0]}, () => {
+          let id = games[game]
+          $("#" + id).html(contractInstance.totalVotesFor.call(gameName).toString())
+        })
+      }
+      $(document).ready(() => {
+        gameNames = Object.keys(games)
+        for (let i = 0; i < gameNames.length; i++) {
+          let n = gameNames[i];
+          let v = contractInstance.totalVotesFor.call(n).toString()
+          $("#" + games[n]).html(v)
+        }
+      })
+    </script>
+  </body>
+</html>

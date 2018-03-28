@@ -9,6 +9,8 @@ import (
 
 func main() {
 	e := echo.New()
+	e.Renderer = LoadTemplates(e)
+
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
@@ -17,5 +19,5 @@ func main() {
 }
 
 func index(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!")
+	return c.Render(http.StatusOK, "index.tmpl", nil)
 }
