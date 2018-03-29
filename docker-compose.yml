@@ -1,8 +1,11 @@
 version: '3.4'
 services:
+  geth:
+    image: ethereum/client-go:alpine
+    ports:
+      - "8545:8545"
   voting:
     image: golang:1.10.0
-    container_name: voting.server
     ports:
       - "4000:4000"
     volumes:
